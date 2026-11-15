@@ -13,8 +13,7 @@ import 'leaflet/dist/leaflet.css';
 import './Management.css';
 import './Vendors.css';
 
-const API = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '
-/api/vendors';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/fruits';
 
 const blank = {
   VendorName: '',
