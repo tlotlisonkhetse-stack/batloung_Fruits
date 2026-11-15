@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import './Management.css';
 
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/fruits';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/boxsizes';
 
 async function readResponse(response) {
   const text = await response.text();

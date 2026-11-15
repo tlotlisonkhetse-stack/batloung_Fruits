@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import './Management.css';
 import './Suppliers.css';
 
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/fruits';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/suppliers';
 
 const provinces = [
   'Eastern Cape',
