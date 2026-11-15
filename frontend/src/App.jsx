@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 
-import Fruits from './pages/Fruits';
-import BoxSizes from './pages/BoxSizes';
+import Fruits from './pages/fruits';
+import BoxSizes from './pages/boxSizes';
 import Suppliers from './pages/suppliers';
 import Vendors from './pages/vendors';
 import Products from './pages/products';
 import Purchases from './pages/purchases';
-import Orders from './pages/Orders';
-import Reports from './pages/Reports';
+import Orders from './pages/orders';
+import Reports from './pages/reports';
 
 import {
   getFruits,
