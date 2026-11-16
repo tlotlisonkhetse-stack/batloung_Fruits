@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './App.css';
+import './index.css';
 
 import Fruits from './pages/fruits';
 import BoxSizes from './pages/boxSizes';
