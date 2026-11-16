@@ -46,6 +46,19 @@ const summaryCards = [
   { key: 'purchases', label: 'Stock purchases', color: 'blue', icon: '🧺', note: 'Recorded deliveries' }
 ];
 
+// Run one request, retrying a few times if the free database is busy
+async function loadWithRetry(fn) {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (attempt === 3) throw err;
+      await new Promise((resolve) => setTimeout(resolve, 600 * (attempt + 1)));
+    }
+  }
+  return [];
+}
+
 function App() {
   const [page, setPage] = useState('dashboard');
   const [counts, setCounts] = useState(emptyCounts);
@@ -53,26 +66,25 @@ function App() {
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [mobileMenu, setMobileMenu] = useState(false);
-  
+
   async function loadDashboard() {
     setLoading(true);
     setError('');
 
     try {
-      const responses = await Promise.all([
-        getFruits(),
-        getSuppliers(),
-        getVendors(),
-        getProducts(),
-        getPurchases()
-      ]);
+      // One request at a time, so the free database never gets too many connections
+      const fruits = await loadWithRetry(getFruits);
+      const suppliers = await loadWithRetry(getSuppliers);
+      const vendors = await loadWithRetry(getVendors);
+      const products = await loadWithRetry(getProducts);
+      const purchases = await loadWithRetry(getPurchases);
 
       setCounts({
-        fruits: Array.isArray(responses[0]) ? responses[0] : [],
-        suppliers: Array.isArray(responses[1]) ? responses[1] : [],
-        vendors: Array.isArray(responses[2]) ? responses[2] : [],
-        products: Array.isArray(responses[3]) ? responses[3] : [],
-        purchases: Array.isArray(responses[4]) ? responses[4] : []
+        fruits: Array.isArray(fruits) ? fruits : [],
+        suppliers: Array.isArray(suppliers) ? suppliers : [],
+        vendors: Array.isArray(vendors) ? vendors : [],
+        products: Array.isArray(products) ? products : [],
+        purchases: Array.isArray(purchases) ? purchases : []
       });
     } catch (err) {
       console.error('Unable to load market data:', err);
@@ -231,9 +243,6 @@ function App() {
   }
 
   return (
-
-  
-
     <div className="fresh-app">
       <aside className={`fresh-sidebar ${mobileMenu ? 'sidebar-open' : ''}`}>
         <button className="brand-lockup" onClick={() => navigate('dashboard')}>
